@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce_support_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-support_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-support_password}
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce_support}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-support_user} -d ${POSTGRES_DB:-ecommerce_support}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_test:
+    image: postgres:15-alpine
+    container_name: ecommerce_support_test_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-support_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-support_password}
+      POSTGRES_DB: ecommerce_support_test
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-support_user} -d ecommerce_support_test']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  postgres_test_data:
