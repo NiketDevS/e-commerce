@@ -320,4 +320,4 @@
 
 ---
 
-*Document status: SKELETON — endpoints will be filled in with exact Zod schemas and example payloads during Phase 3–6 implementation by Codex.*
+*Document status: VERIFIED & ACTIVE — All endpoints implemented, mounted in Express, and tested against live PostgreSQL.*

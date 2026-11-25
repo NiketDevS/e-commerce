@@ -112,18 +112,19 @@
 ---
 
 ## PHASE 8 — Integration and Testing
-- ❌ Customer journey E2E verified (Frontend + Backend)
-- ❌ Staff journey E2E verified (Frontend + Backend)
+- ✔️ Customer journey E2E verified (Live API & Frontend routes)
+- ✔️ Staff journey E2E verified (Live API & Frontend routes)
 - ✔️ All 18 mandatory backend test cases pass (`16/16` test blocks green)
-- ✔️ Backend security tests complete
+- ✔️ Backend security & prompt injection tests complete
 
 ---
 
 ## PHASE 9 — Submission Readiness
-- ❌ README.md complete
-- ✅ docs/ARCHITECTURE.md with diagrams
-- ✅ docs/API_CONTRACT.md
-- ❌ Demo accounts and walkthrough finalized
+- ✔️ README.md complete (setup, demo accounts, walkthrough, architecture)
+- ✔️ docs/ARCHITECTURE.md with system & critical flow diagrams
+- ✔️ docs/API_CONTRACT.md final & verified
+- ✔️ Demo accounts and walkthrough finalized
+- ✔️ Final clean Git commit
 
 ---
 

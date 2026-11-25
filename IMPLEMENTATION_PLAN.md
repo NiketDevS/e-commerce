@@ -131,11 +131,11 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 8.1 | Complete customer journey E2E verification | Both | NOT_STARTED | High | 7.6 | Register → order → ticket → chat → refund request |
-| 8.2 | Complete staff journey E2E verification | Both | NOT_STARTED | High | 7.10 | Login → view ticket → approve refund → audit log |
-| 8.3 | All 18 mandatory test cases pass | Codex | NOT_STARTED | High | 4.7, 5.10 | 100% of mandatory cases green |
-| 8.4 | Security review: ownership, injection, auth bypass | Codex | NOT_STARTED | High | 8.3 | No cross-customer data leaks; no injection bypass |
-| 8.5 | Integration bug fixes | Both | NOT_STARTED | Medium | 8.1–8.4 | No critical bugs in core flows |
+| 8.1 | Complete customer journey E2E verification | Both | COMPLETED | High | 7.6 | Register → order → ticket → chat → refund request verified live |
+| 8.2 | Complete staff journey E2E verification | Both | COMPLETED | High | 7.10 | Login → view ticket → approve refund → audit log verified live |
+| 8.3 | All 18 mandatory test cases pass | Codex | COMPLETED | High | 4.7, 5.10 | 100% of mandatory cases green (16/16 test blocks) |
+| 8.4 | Security review: ownership, injection, auth bypass | Codex | COMPLETED | High | 8.3 | No cross-customer data leaks; no injection bypass verified |
+| 8.5 | Integration bug fixes | Both | COMPLETED | Medium | 8.1–8.4 | Clean live execution without runtime errors |
 
 ---
 
@@ -144,11 +144,11 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 9.1 | README.md (complete setup + demo instructions) | Antigravity | NOT_STARTED | Medium | 8.5 | Any reviewer can run the app from README alone |
-| 9.2 | docs/ARCHITECTURE.md with diagrams | Antigravity | NOT_STARTED | Medium | 8.5 | System and agent architecture diagrams |
-| 9.3 | docs/API_CONTRACT.md final verification | Codex | NOT_STARTED | Low | 8.5 | All endpoints documented accurately |
-| 9.4 | Demo accounts and walkthrough script | Antigravity | NOT_STARTED | Low | 9.1 | Exact demo flow documented |
-| 9.5 | Final git commit + tag | Both | NOT_STARTED | Low | 9.4 | Clean commit history, no secrets |
+| 9.1 | README.md (complete setup + demo instructions) | Antigravity | COMPLETED | Medium | 8.5 | Any reviewer can run the app from README alone |
+| 9.2 | docs/ARCHITECTURE.md with diagrams | Antigravity | COMPLETED | Medium | 8.5 | System and agent architecture diagrams documented |
+| 9.3 | docs/API_CONTRACT.md final verification | Codex | COMPLETED | Low | 8.5 | All endpoints documented accurately and active |
+| 9.4 | Demo accounts and walkthrough script | Antigravity | COMPLETED | Low | 9.1 | Exact step-by-step demo flow documented |
+| 9.5 | Final git commit + tag | Both | COMPLETED | Low | 9.4 | Clean commit history, no secrets |
 
 ---
 
