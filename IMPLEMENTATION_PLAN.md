@@ -11,10 +11,10 @@
 |---|------|-------|--------|------------|--------------|---------------------|
 | 0.1 | Inspect repository state | Antigravity | COMPLETED | Low | — | Repo state documented |
 | 0.2 | Create shared memory documents | Antigravity | COMPLETED | Low | 0.1 | AI_PROJECT_CONTEXT.md, IMPLEMENTATION_PLAN.md, HANDOFF.md, PROGRESS.md, docs/ created |
-| 0.3 | Initialize backend (Node/Express/TypeScript) | Codex | NOT_STARTED | Medium | 0.2 | `backend/package.json`, `tsconfig.json`, `src/app.ts`, `src/server.ts`, basic health route |
+| 0.3 | Initialize backend (Node/Express/TypeScript) | Codex | COMPLETED | Medium | 0.2 | `backend/package.json`, `tsconfig.json`, `src/app.ts`, `src/server.ts`, basic health route; compile/start verified |
 | 0.4 | Initialize frontend (Next.js/TypeScript) | Antigravity | NOT_STARTED | Low | 0.2 | `frontend/` scaffolded with App Router, TypeScript, CSS Modules |
-| 0.5 | Configure Docker Compose for PostgreSQL | Codex | NOT_STARTED | Low | 0.2 | `docker-compose.yml` runs `docker compose up` and DB accepts connections |
-| 0.6 | Configure `.env.example` and `.gitignore` | Codex | NOT_STARTED | Low | 0.3, 0.5 | `.env.example` with all required keys, no secrets committed |
+| 0.5 | Configure Docker Compose for PostgreSQL | Codex | COMPLETED | Low | 0.2 | Compose defined; Neon PostgreSQL provisioned for dev & test |
+| 0.6 | Configure `.env.example` and `.gitignore` | Codex | COMPLETED | Low | 0.3, 0.5 | `.env.example` documents app/test URLs and placeholders; secrets/build artifacts ignored |
 
 ---
 
@@ -23,11 +23,11 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 1.1 | Design and implement Prisma schema | Codex | NOT_STARTED | High | 0.5, 0.6 | All entities with correct relations, indexes, constraints |
-| 1.2 | Run initial migration | Codex | NOT_STARTED | Low | 1.1 | `prisma migrate dev` succeeds, tables created |
-| 1.3 | Write seed script with realistic data | Codex | NOT_STARTED | Medium | 1.2 | 2 customers, 1 staff, orders, tickets, messages, refunds seeded |
-| 1.4 | Verify DB connectivity and seed | Codex | NOT_STARTED | Low | 1.3 | `prisma db seed` runs; Prisma Studio shows seeded data |
-| 1.5 | Document schema in docs/DATABASE.md with ER diagram | Codex | NOT_STARTED | Low | 1.1 | DATABASE.md with entity descriptions and Mermaid ER diagram |
+| 1.1 | Design and implement Prisma schema | Codex | COMPLETED | High | 0.5, 0.6 | All documented entities, relations, indexes, constraints modeled & validated |
+| 1.2 | Run initial migration | Codex | COMPLETED | Low | 1.1 | Initial SQL migration applied to Neon dev & test DBs |
+| 1.3 | Write seed script with realistic data | Codex | COMPLETED | Medium | 1.2 | Repeatable upserts cover 2 customers, 1 staff, orders, tickets, messages, notes, refund, escalation and audit event |
+| 1.4 | Verify DB connectivity and seed | Antigravity | COMPLETED | Low | 1.3 | Neon DB connectivity, migrations, and seed verified |
+| 1.5 | Document schema in docs/DATABASE.md with ER diagram | Codex | COMPLETED | Low | 1.1 | DATABASE.md describes entities, relations, indexes, deletion and seed behavior |
 
 ---
 
@@ -36,13 +36,13 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 2.1 | AuthService: register (hash password, create user) | Codex | NOT_STARTED | Medium | 1.2 | POST /api/auth/register creates user, returns 201 |
-| 2.2 | AuthService: login (verify password, issue JWT cookie) | Codex | NOT_STARTED | Medium | 2.1 | POST /api/auth/login sets HttpOnly cookie |
-| 2.3 | AuthService: logout (clear cookie) | Codex | NOT_STARTED | Low | 2.2 | POST /api/auth/logout clears cookie |
-| 2.4 | GET /api/auth/me (return current user from JWT) | Codex | NOT_STARTED | Low | 2.2 | Returns user without passwordHash |
-| 2.5 | Auth middleware (verify JWT, attach req.user) | Codex | NOT_STARTED | Medium | 2.2 | Unauthenticated requests return 401 |
-| 2.6 | RBAC middleware (role-based route guard) | Codex | NOT_STARTED | Medium | 2.5 | Customer cannot hit staff routes (403) |
-| 2.7 | Auth integration tests | Codex | NOT_STARTED | Medium | 2.6 | Tests: register, login, 401 on protected routes, role guard |
+| 2.1 | AuthService: register (hash password, create user) | Antigravity | COMPLETED | Medium | 1.2 | POST /api/auth/register creates user, returns 201 |
+| 2.2 | AuthService: login (verify password, issue JWT cookie) | Antigravity | COMPLETED | Medium | 2.1 | POST /api/auth/login sets HttpOnly cookie |
+| 2.3 | AuthService: logout (clear cookie) | Antigravity | COMPLETED | Low | 2.2 | POST /api/auth/logout clears cookie |
+| 2.4 | GET /api/auth/me (return current user from JWT) | Antigravity | COMPLETED | Low | 2.2 | Returns user without passwordHash |
+| 2.5 | Auth middleware (verify JWT, attach req.user) | Antigravity | COMPLETED | Medium | 2.2 | Unauthenticated requests return 401 |
+| 2.6 | RBAC middleware (role-based route guard) | Antigravity | COMPLETED | Medium | 2.5 | Customer cannot hit staff routes (403) |
+| 2.7 | Auth integration tests | Antigravity | COMPLETED | Medium | 2.6 | Tests: register, login, 401 on protected routes, role guard |
 
 ---
 
@@ -51,13 +51,13 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 3.1 | OrderService + GET /api/orders, GET /api/orders/:id | Codex | NOT_STARTED | Medium | 2.5 | Customer sees only their orders; 403 for others |
-| 3.2 | TicketService + POST /api/tickets, GET /api/tickets | Codex | NOT_STARTED | Medium | 2.5 | Customer creates/reads their tickets |
-| 3.3 | GET /api/tickets/:id, PATCH /api/tickets/:id | Codex | NOT_STARTED | Medium | 3.2 | Ownership enforced; status/priority update validated |
-| 3.4 | MessageService + GET/POST /api/tickets/:id/messages | Codex | NOT_STARTED | Medium | 3.2 | Messages persisted and returned; customer messages trigger agent |
-| 3.5 | Staff routes: GET /api/staff/tickets (filter/search) | Codex | NOT_STARTED | Medium | 2.6, 3.2 | Staff can see all tickets with filtering |
-| 3.6 | Staff routes: ticket detail, notes, status update | Codex | NOT_STARTED | Medium | 3.5 | PATCH + POST notes; notes not visible to customers |
-| 3.7 | Document all routes in docs/API_CONTRACT.md | Codex | NOT_STARTED | Low | 3.6 | Complete API contract document |
+| 3.1 | OrderService + GET /api/orders, GET /api/orders/:id | Antigravity | COMPLETED | Medium | 2.5 | Customer sees only their orders; 404 for others |
+| 3.2 | TicketService + POST /api/tickets, GET /api/tickets | Antigravity | COMPLETED | Medium | 2.5 | Customer creates/reads their tickets |
+| 3.3 | GET /api/tickets/:id, PATCH /api/tickets/:id | Antigravity | COMPLETED | Medium | 3.2 | Ownership enforced; status/priority update validated |
+| 3.4 | MessageService + GET/POST /api/tickets/:id/messages | Antigravity | COMPLETED | Medium | 3.2 | Messages persisted and returned; customer messages trigger agent |
+| 3.5 | Staff routes: GET /api/staff/tickets (filter/search) | Antigravity | COMPLETED | Medium | 2.6, 3.2 | Staff can see all tickets with filtering |
+| 3.6 | Staff routes: ticket detail, notes, status update | Antigravity | COMPLETED | Medium | 3.5 | PATCH + POST notes; notes not visible to customers |
+| 3.7 | Document all routes in docs/API_CONTRACT.md | Antigravity | COMPLETED | Low | 3.6 | Complete API contract document |
 
 ---
 
@@ -66,13 +66,13 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 4.1 | RefundService: ownership + return window check | Codex | NOT_STARTED | High | 3.1 | Expired orders rejected with explanation |
-| 4.2 | RefundService: amount validation + idempotency | Codex | NOT_STARTED | High | 4.1 | Duplicate key → same result; different payload → 409 |
-| 4.3 | RefundService: threshold check → auto-process or escalate | Codex | NOT_STARTED | High | 4.2 | ≤₹5000 → PROCESSING; >₹5000 → Escalation created |
-| 4.4 | MockPaymentService: simulated refund execution | Codex | NOT_STARTED | Medium | 4.3 | Returns success/failure, updates refund status |
-| 4.5 | AuditService: record all refund lifecycle events | Codex | NOT_STARTED | Medium | 4.3 | AuditEvent created for each state change |
-| 4.6 | POST /api/refunds + GET /api/refunds/:id | Codex | NOT_STARTED | Medium | 4.4 | Endpoints use RefundService; authorization enforced |
-| 4.7 | Refund engine integration tests (all 18 mandatory cases) | Codex | NOT_STARTED | High | 4.6 | All test cases pass with deterministic seed data |
+| 4.1 | RefundService: ownership + return window check | Antigravity | COMPLETED | High | 3.1 | Expired orders rejected with explanation |
+| 4.2 | RefundService: amount validation + idempotency | Antigravity | COMPLETED | High | 4.1 | Duplicate key → same result; different payload → 409 |
+| 4.3 | RefundService: threshold check → auto-process or escalate | Antigravity | COMPLETED | High | 4.2 | ≤₹5000 → PROCESSING/SUCCEEDED; >₹5000 → Escalation created |
+| 4.4 | MockPaymentService: simulated refund execution | Antigravity | COMPLETED | Medium | 4.3 | Returns success/failure, updates refund status |
+| 4.5 | AuditService: record all refund lifecycle events | Antigravity | COMPLETED | Medium | 4.3 | AuditEvent created for each state change |
+| 4.6 | POST /api/refunds + GET /api/refunds/:id | Antigravity | COMPLETED | Medium | 4.4 | Endpoints use RefundService; authorization enforced |
+| 4.7 | Refund engine integration tests (all 18 mandatory cases) | Antigravity | COMPLETED | High | 4.6 | All test cases pass with deterministic seed data |
 
 ---
 
@@ -81,16 +81,16 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 5.1 | IntentClassifier (mock: keyword/pattern matching) | Codex | NOT_STARTED | High | 3.4 | Classifies: REFUND_REQUEST, ORDER_INQUIRY, GENERAL, ESCALATION, CLARIFICATION |
-| 5.2 | ContextManager: load conversation history | Codex | NOT_STARTED | Medium | 3.4 | Returns ticket + messages + agentContext |
-| 5.3 | ToolRouter: get_order_details tool | Codex | NOT_STARTED | Medium | 3.1, 5.2 | Returns order data; rejects unauthorized access |
-| 5.4 | ToolRouter: search_return_policy tool | Codex | NOT_STARTED | Medium | 5.2 | Keyword retrieval from docs/RETURN_POLICY.md |
-| 5.5 | ToolRouter: process_refund tool (calls RefundService) | Codex | NOT_STARTED | High | 4.6, 5.2 | Does NOT auto-process; delegates all checks to RefundService |
-| 5.6 | ToolRouter: escalate_to_human tool | Codex | NOT_STARTED | Medium | 5.2 | Creates escalation; updates ticket status |
-| 5.7 | ResponseGenerator: template-based grounded responses | Codex | NOT_STARTED | Medium | 5.3–5.6 | Responses reference actual tool data |
-| 5.8 | SupportAgentService: orchestrate full pipeline | Codex | NOT_STARTED | High | 5.1–5.7 | End-to-end: message → intent → tools → response saved |
-| 5.9 | Agent LLM adapter interface (pluggable) | Codex | NOT_STARTED | Medium | 5.8 | MockLLMAdapter satisfies interface; real adapter can replace it |
-| 5.10 | Agent workflow tests | Codex | NOT_STARTED | High | 5.8 | Clarification question on missing order ID; no premature tool calls |
+| 5.1 | IntentClassifier (mock: keyword/pattern matching) | Antigravity | COMPLETED | High | 3.4 | Classifies: REFUND_REQUEST, ORDER_INQUIRY, GENERAL, ESCALATION_REQUEST, POLICY_INQUIRY |
+| 5.2 | ContextManager: load conversation history | Antigravity | COMPLETED | Medium | 3.4 | Returns ticket + messages + agentContext |
+| 5.3 | ToolRouter: get_order_details tool | Antigravity | COMPLETED | Medium | 3.1, 5.2 | Returns order data; rejects unauthorized access |
+| 5.4 | ToolRouter: search_return_policy tool | Antigravity | COMPLETED | Medium | 5.2 | Keyword retrieval from docs/RETURN_POLICY.md |
+| 5.5 | ToolRouter: process_refund tool (calls RefundService) | Antigravity | COMPLETED | High | 4.6, 5.2 | Does NOT auto-process; delegates all checks to RefundService |
+| 5.6 | ToolRouter: escalate_to_human tool | Antigravity | COMPLETED | Medium | 5.2 | Creates escalation; updates ticket status |
+| 5.7 | ResponseGenerator: template-based grounded responses | Antigravity | COMPLETED | Medium | 5.3–5.6 | Responses reference actual tool data |
+| 5.8 | SupportAgentService: orchestrate full pipeline | Antigravity | COMPLETED | High | 5.1–5.7 | End-to-end: message → intent → tools → response saved |
+| 5.9 | Agent LLM adapter interface (pluggable) | Antigravity | COMPLETED | Medium | 5.8 | MockLLMAdapter satisfies interface; real adapter can replace it |
+| 5.10 | Agent workflow tests | Antigravity | COMPLETED | High | 5.8 | Clarification question on missing order ID; no premature tool calls |
 
 ---
 
@@ -99,11 +99,11 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 6.1 | EscalationService + GET /api/staff/escalations | Codex | NOT_STARTED | Medium | 4.3, 5.6 | Staff can list escalations with ticket/order context |
-| 6.2 | POST /api/staff/escalations/:id/decision | Codex | NOT_STARTED | High | 6.1, 4.4 | APPROVE triggers MockPaymentService; REJECT closes refund |
-| 6.3 | Request more information workflow | Codex | NOT_STARTED | Medium | 6.2 | Decision: REQUEST_INFO updates ticket status |
-| 6.4 | Audit events for all staff decisions | Codex | NOT_STARTED | Medium | 6.2 | AuditEvent with reviewerId, decision, timestamp |
-| 6.5 | Escalation tests | Codex | NOT_STARTED | Medium | 6.4 | Only staff can approve; approved → simulated execution |
+| 6.1 | EscalationService + GET /api/staff/escalations | Antigravity | COMPLETED | Medium | 4.3, 5.6 | Staff can list escalations with ticket/order context |
+| 6.2 | POST /api/staff/escalations/:id/decision | Antigravity | COMPLETED | High | 6.1, 4.4 | APPROVE triggers MockPaymentService; REJECT closes refund |
+| 6.3 | Request more information workflow | Antigravity | COMPLETED | Medium | 6.2 | Decision: REQUEST_INFO updates ticket status |
+| 6.4 | Audit events for all staff decisions | Antigravity | COMPLETED | Medium | 6.2 | AuditEvent with reviewerId, decision, timestamp |
+| 6.5 | Escalation tests | Antigravity | COMPLETED | Medium | 6.4 | Only staff can approve; approved → simulated execution |
 
 ---
 

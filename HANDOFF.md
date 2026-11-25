@@ -6,7 +6,7 @@
 ---
 
 ## Current Phase
-**Phase 0 — Architecture and Setup**
+**Phase 7 — Frontend** (Phases 0–6 Backend, Database, Auth, Refund Engine, AI Agent, Escalation, and all 18 Mandatory Backend Tests are COMPLETE and VERIFIED).
 
 ---
 
@@ -14,171 +14,159 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Repository | Initialized | Empty Git repo, no commits |
-| Backend | NOT_STARTED | Directory created, no code yet |
-| Frontend | NOT_STARTED | Directory created, no code yet |
-| Database | NOT_STARTED | No schema, no Docker config |
-| Auth | NOT_STARTED | — |
-| Orders API | NOT_STARTED | — |
-| Tickets API | NOT_STARTED | — |
-| Messages API | NOT_STARTED | — |
-| Refund Engine | NOT_STARTED | — |
-| AI Agent | NOT_STARTED | — |
-| Escalation | NOT_STARTED | — |
-| Staff APIs | NOT_STARTED | — |
-| Tests | NOT_STARTED | — |
+| Repository | Active | Backend Phases 0–6 complete & tested |
+| Backend | COMPLETED | Express/TypeScript builds cleanly (`npm run build`) |
+| Database | COMPLETED | Neon PostgreSQL (`ecommerce-support`), `neondb` + `ecommerce_support_test` migrated & seeded |
+| Auth | COMPLETED | Register, login, logout, `/me`, HttpOnly JWT cookie, RBAC |
+| Orders API | COMPLETED | Customer-scoped `GET /api/orders`, `GET /api/orders/:id` |
+| Tickets API | COMPLETED | Customer & Staff ticket routes + internal notes |
+| Messages API | COMPLETED | `GET/POST /api/tickets/:ticketId/messages` triggers AI agent |
+| Refund Engine | COMPLETED | R1–R9 enforced in `RefundService`, Decimal arithmetic, idempotency |
+| AI Agent | COMPLETED | `SupportAgentService`, `MockLLMAdapter`, `ToolRouter`, `PolicyService` |
+| Escalation | COMPLETED | `GET /api/staff/escalations`, `POST /api/staff/escalations/:id/decision` |
+| Backend Tests | COMPLETED | All 16 Vitest integration test blocks (18 mandatory cases) PASSING |
+| Frontend | NOT_STARTED | Next task: Phase 7 (Next.js App Router) |
 
 ---
 
 ## Last Completed Task
 
-**Task 0.2 — Create shared memory documents**
+**Phases 1–6 Backend Completion & Verification (Neon PostgreSQL + Integration Tests)**
 
 Completed by: Antigravity
 
-Files created:
-- `AI_PROJECT_CONTEXT.md`
-- `IMPLEMENTATION_PLAN.md`
-- `HANDOFF.md`
-- `PROGRESS.md`
-- `docs/DECISIONS.md`
-- `docs/ARCHITECTURE.md`
-- `docs/DATABASE.md` (skeleton)
-- `docs/API_CONTRACT.md` (skeleton)
-- `docs/RETURN_POLICY.md`
-- `docs/SECURITY.md`
-- `docs/TESTING.md`
-- `docker-compose.yml`
-- `.env.example`
-- `.gitignore`
-- `README.md` (skeleton)
+Summary:
+- Provisioned Neon PostgreSQL project `ecommerce-support` (`flat-cloud-59635234`) with `neondb` (dev) and `ecommerce_support_test` (test) databases.
+- Fixed `schema.prisma` (`directUrl` removed), added `jsonwebtoken`, `decimal.js`, `vitest`, `supertest` to `backend/package.json`, installed 222 packages.
+- Applied Prisma migration `20261125100000_init` to both dev and test Neon databases and ran `npm run db:seed`.
+- Implemented all backend modules: `config/env.ts`, `config/prisma.ts`, `middleware/*`, `auth/*`, `orders/*`, `tickets/*`, `messages/*`, `audit/*`, `refunds/*`, `policies/*`, `escalations/*`, and `agent/*`.
+- Wrote and executed `backend/tests/mandatory.test.ts` covering all 18 mandatory cases: **16/16 test blocks passed**.
 
 ---
 
 ## Files Created or Modified
 
-```
-/Users/niketsarkar/Desktop/e-commerce/
-├── AI_PROJECT_CONTEXT.md        ✅ Created
-├── IMPLEMENTATION_PLAN.md       ✅ Created
-├── HANDOFF.md                   ✅ Created (this file)
-├── PROGRESS.md                  ✅ Created
-├── docker-compose.yml           ✅ Created
-├── .env.example                 ✅ Created
-├── .gitignore                   ✅ Created
-├── README.md                    ✅ Created (skeleton)
-├── docs/
-│   ├── ARCHITECTURE.md          ✅ Created
-│   ├── DATABASE.md              ✅ Created (skeleton)
-│   ├── API_CONTRACT.md          ✅ Created (skeleton)
-│   ├── RETURN_POLICY.md         ✅ Created
-│   ├── DECISIONS.md             ✅ Created
-│   ├── SECURITY.md              ✅ Created
-│   └── TESTING.md               ✅ Created
-├── backend/                     📁 Directory created, empty
-└── frontend/                    📁 Directory created, empty
-```
+- `backend/package.json`, `backend/vitest.config.ts`
+- `backend/prisma/schema.prisma`, `backend/prisma/seed.ts`
+- `backend/src/app.ts`
+- `backend/src/config/env.ts`, `backend/src/config/prisma.ts`
+- `backend/src/utils/apiResponse.ts`, `backend/src/utils/decimal.ts`
+- `backend/src/middleware/authenticate.ts`, `authorize.ts`, `errorHandler.ts`
+- `backend/src/modules/auth/*`
+- `backend/src/modules/orders/*`
+- `backend/src/modules/tickets/*`
+- `backend/src/modules/messages/*`
+- `backend/src/modules/audit/*`
+- `backend/src/modules/policies/*`
+- `backend/src/modules/refunds/*`
+- `backend/src/modules/escalations/*`
+- `backend/src/modules/agent/*`
+- `backend/tests/helpers/setupEnv.ts`, `testDb.ts`, `authHelper.ts`
+- `backend/tests/mandatory.test.ts`
+- `docs/TESTING.md`, `PROGRESS.md`, `IMPLEMENTATION_PLAN.md`
 
 ---
 
 ## Important Functions and Services
-*None implemented yet.*
+
+- `AuthService` (`backend/src/modules/auth/auth.service.ts`)
+- `OrderService` (`backend/src/modules/orders/orders.service.ts`)
+- `TicketService` (`backend/src/modules/tickets/tickets.service.ts`)
+- `MessageService` (`backend/src/modules/messages/messages.service.ts`)
+- `RefundService` (`backend/src/modules/refunds/refunds.service.ts`)
+- `EscalationService` (`backend/src/modules/escalations/escalations.service.ts`)
+- `SupportAgentService` (`backend/src/modules/agent/supportAgent.service.ts`)
+- `PolicyService` (`backend/src/modules/policies/policies.service.ts`)
+- `AuditService` (`backend/src/modules/audit/audit.service.ts`)
 
 ---
 
 ## Database Changes
-*No schema exists yet. Prisma not initialized.*
+
+- Neon PostgreSQL project `ecommerce-support` (`flat-cloud-59635234`) active.
+- `20261125100000_init` applied to both `neondb` and `ecommerce_support_test`.
+- Demo accounts in `neondb`:
+  - Customer: `maya@example.com` / `password123`
+  - Customer: `arjun@example.com` / `password123`
+  - Support Agent: `support@example.com` / `password123`
 
 ---
 
 ## API Contract Changes
-*No APIs implemented. Skeleton API_CONTRACT.md created.*
+
+All routes documented in `docs/API_CONTRACT.md` are implemented and mounted in `backend/src/app.ts` under `/api/auth`, `/api/orders`, `/api/tickets`, `/api/tickets/:ticketId/messages`, `/api/refunds`, `/api/staff/tickets`, and `/api/staff/escalations`.
 
 ---
 
 ## Tests Executed
-*None.*
+
+- `npm run build` (TypeScript compilation)
+- `npx prisma validate`
+- `npx prisma migrate deploy` (dev & test Neon DBs)
+- `npm run db:seed`
+- `npm test` (`tests/mandatory.test.ts`)
 
 ## Tests Passed
-*None.*
+
+- **16/16 test blocks (covering all 18 mandatory test cases)** in `backend/tests/mandatory.test.ts` passed in 22.46s against Neon PostgreSQL.
 
 ## Tests Failed
-*None.*
+
+- None.
 
 ---
 
 ## Known Issues
-- None yet. Backend and frontend initialization are the next critical tasks.
+
+- `registry.npmjs.org` had SSL connection issues in this local network; `https://registry.npmmirror.com` worked cleanly for `npm install`. Use `--registry=https://registry.npmmirror.com` when installing frontend packages if needed.
+- Docker is not installed locally; Neon PostgreSQL is used instead.
 
 ---
 
 ## Unresolved Decisions
-- None. All major architectural decisions are documented in `docs/DECISIONS.md`.
+
+- None.
 
 ---
 
 ## Next Exact Task
 
-**Task 0.3 — Initialize backend (Node.js / Express / TypeScript)**
+**Phase 7 (Tasks 7.1–7.11) — Initialize and Build Next.js Frontend**
 
-Exact steps:
-1. `cd backend && npm init -y`
-2. Install: `express`, `typescript`, `ts-node`, `nodemon`, `@types/express`, `@types/node`, `cors`, `cookie-parser`, `dotenv`, `bcryptjs`, `jsonwebtoken`, `zod`, `prisma`, `@prisma/client`, `@types/bcryptjs`, `@types/jsonwebtoken`, `@types/cors`, `@types/cookie-parser`
-3. Configure `tsconfig.json`
-4. Create `src/app.ts` (Express app with CORS + cookie-parser)
-5. Create `src/server.ts` (listen on PORT 4000)
-6. Add `GET /health` route that returns `{ status: "ok" }`
-7. Configure `package.json` scripts: `dev`, `build`, `start`
-8. Initialize Prisma: `npx prisma init`
-9. Configure `prisma/schema.prisma` datasource for PostgreSQL
-
-Also complete simultaneously:
-- **Task 0.5 — Docker Compose for PostgreSQL**
-- **Task 0.6 — `.env.example` and `.gitignore`** (skeleton exists, refine with backend env vars)
+1. Scaffold `frontend/` with Next.js App Router, TypeScript, and clean CSS Modules / Vanilla CSS.
+2. Create `services/api.ts` fetch wrapper with `credentials: 'include'` targeting `http://localhost:4000/api`.
+3. Build Auth pages (`/login`, `/register`) + Auth context/hook.
+4. Build Customer screens: Dashboard, Orders list & detail, New Ticket form, AI Support Chat, Refund status view.
+5. Build Staff screens: Support Dashboard / Ticket queue with search/filter, Ticket detail with internal notes, Escalation review & Approve/Reject/Request Info controls.
 
 ---
 
 ## Required Context for the Next Task
 
-Codex must read:
-- `AI_PROJECT_CONTEXT.md` (architecture, conventions, security invariants)
-- `IMPLEMENTATION_PLAN.md` (Phase 0 tasks 0.3–0.6, Phase 1 overview)
-- `docs/DECISIONS.md` (why these tech choices were made)
-- `docs/ARCHITECTURE.md` (project structure conventions)
-- `.env.example` (environment variable names already defined)
-- `docker-compose.yml` (PostgreSQL configuration)
+Read `AI_PROJECT_CONTEXT.md`, `docs/API_CONTRACT.md`, and `IMPLEMENTATION_PLAN.md` (Phase 7).
 
 ---
 
 ## NEXT SESSION CONFIGURATION
 
-**Next tool:** Codex
+**Next tool:** Antigravity
 
-**Next model:** N/A (Codex selects its own model)
+**Next model:** Gemini 4 Hydrogen (Medium)
 
-**Reason:** Backend initialization is primarily boilerplate-heavy Node.js/TypeScript/Prisma setup. Codex excels at this. It needs to initialize the Express app, TypeScript configuration, Prisma, Docker Compose and the development environment. This is well-suited to Codex's backend focus per the agreed division of responsibilities.
+**Reason:** Phase 7 is frontend-heavy (Next.js App Router, React components, forms, tables, dashboard screens, CSS Modules, and API integration) which matches Gemini 4 Hydrogen (Medium)'s strengths and the agreed Antigravity frontend ownership.
 
-**Next task:** Task 0.3 — Initialize backend + Task 0.5 — Docker Compose + Task 0.6 — Env configuration
+**Next task:** Phase 7 — Frontend initialization, API service layer, Customer & Staff UI
 
 **Expected files:**
-- `backend/package.json`
-- `backend/tsconfig.json`
-- `backend/src/app.ts`
-- `backend/src/server.ts`
-- `backend/.env` (from .env.example, not committed)
-- `docker-compose.yml` (refine if needed)
-- `.gitignore` (refine if needed)
+- `frontend/package.json`, `frontend/tsconfig.json`, `frontend/next.config.*`
+- `frontend/src/services/api.ts` (or `frontend/services/api.ts`)
+- `frontend/src/app/**` (login, register, customer dashboard, orders, tickets, chat, refunds, staff dashboard, escalations)
 
 **Prerequisites:**
-- Docker Desktop must be running when testing DB connectivity
-- Read `AI_PROJECT_CONTEXT.md` before writing any code
-- Read `docs/ARCHITECTURE.md` for directory conventions
-- Read `.env.example` for env variable names
+- Backend running on `http://localhost:4000` (`cd backend && npm run dev`)
 
 **Task complexity:** Medium
 
 **Verification requirements:**
-- `npx ts-node src/server.ts` (or `npm run dev`) starts without errors
-- `curl http://localhost:4000/health` returns `{"status":"ok"}`
-- `docker compose up -d` starts PostgreSQL without errors
-- `npx prisma migrate dev` connects to PostgreSQL successfully
+- `cd frontend && npm run build` succeeds with zero TypeScript/Next.js errors
+- Customer and staff flows verified against live backend on port 4000

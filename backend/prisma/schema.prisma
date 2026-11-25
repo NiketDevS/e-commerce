@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  SUPPORT_AGENT
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_CUSTOMER
+  ESCALATED
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum SenderType {
+  CUSTOMER
+  AI
+  SUPPORT_AGENT
+  SYSTEM
+}
+
+enum RefundStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum EscalationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EscalationStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+}
+
+enum EscalationDecision {
+  PENDING
+  APPROVED
+  REJECTED
+  REQUEST_INFO
+}
+
+model User {
+  id                 String       @id @default(cuid())
+  name               String
+  email              String       @unique
+  passwordHash       String
+  role               Role         @default(CUSTOMER)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  orders             Order[]
+  tickets            Ticket[]     @relation("TicketCustomer")
+  requestedRefunds   Refund[]     @relation("RefundRequester")
+  reviewedRefunds    Refund[]     @relation("RefundReviewer")
+  authoredNotes      TicketNote[] @relation("NoteAuthor")
+  assignedEscalations Escalation[] @relation("EscalationAssignee")
+  auditEvents        AuditEvent[] @relation("AuditActor")
+
+  @@index([role])
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  customerId   String
+  orderNumber  String      @unique
+  status       OrderStatus @default(PENDING)
+  productName  String
+  category     String
+  deliveryDate DateTime?
+  totalAmount  Decimal     @db.Decimal(12, 2)
+  createdAt    DateTime    @default(now())
+  customer     User        @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  tickets      Ticket[]
+  refunds      Refund[]
+
+  @@index([customerId])
+  @@index([status])
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  customerId  String
+  orderId     String?
+  subject     String
+  description String
+  category    String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  agentContext Json?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  customer    User           @relation("TicketCustomer", fields: [customerId], references: [id], onDelete: Restrict)
+  order       Order?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  messages    Message[]
+  notes       TicketNote[]
+  escalation  Escalation?
+  refunds     Refund[]
+
+  @@index([customerId])
+  @@index([orderId])
+  @@index([status])
+  @@index([priority])
+}
+
+model Message {
+  id         String     @id @default(cuid())
+  ticketId   String
+  senderType SenderType
+  content    String
+  createdAt  DateTime   @default(now())
+  ticket     Ticket     @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId, createdAt])
+}
+
+model TicketNote {
+  id        String   @id @default(cuid())
+  ticketId  String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author    User     @relation("NoteAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([ticketId])
+  @@index([authorId])
+}
+
+model Refund {
+  id             String       @id @default(cuid())
+  orderId        String
+  ticketId       String
+  requestedById  String
+  reviewedById   String?
+  amount         Decimal      @db.Decimal(12, 2)
+  reason         String
+  status         RefundStatus @default(PENDING_REVIEW)
+  idempotencyKey String       @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  order          Order        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  ticket         Ticket       @relation(fields: [ticketId], references: [id], onDelete: Restrict)
+  requestedBy    User         @relation("RefundRequester", fields: [requestedById], references: [id], onDelete: Restrict)
+  reviewedBy     User?        @relation("RefundReviewer", fields: [reviewedById], references: [id], onDelete: Restrict)
+  escalation    Escalation?
+
+  @@index([orderId])
+  @@index([ticketId])
+  @@index([requestedById])
+  @@index([reviewedById])
+  @@index([status])
+}
+
+model Escalation {
+  id           String             @id @default(cuid())
+  ticketId     String             @unique
+  refundId     String?            @unique
+  summary      String
+  priority     EscalationPriority @default(MEDIUM)
+  assignedToId String?
+  status       EscalationStatus   @default(OPEN)
+  decision     EscalationDecision @default(PENDING)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  ticket       Ticket             @relation(fields: [ticketId], references: [id], onDelete: Restrict)
+  refund       Refund?            @relation(fields: [refundId], references: [id], onDelete: Restrict)
+  assignedTo   User?              @relation("EscalationAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([priority])
+  @@index([assignedToId])
+}
+
+model AuditEvent {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([createdAt])
+  @@index([entityType, entityId])
+}

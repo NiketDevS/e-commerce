@@ -96,14 +96,13 @@ async function seedTestData(): Promise<SeedResult>  // Returns typed seed IDs
 
 ### Seed Data for Tests (deterministic)
 ```
-Customer 1: alice@test.com / password123
-Customer 2: bob@test.com / password123
-Staff 1: staff@test.com / staffpass123
+Customer 1: maya@example.com / password123
+Customer 2: arjun@example.com / password123
+Staff 1:    support@example.com / password123
 
-Order 1 (Alice): ORD-TEST-001, delivered 2 days ago, Electronics, ₹3,000  ← eligible, auto-refund
-Order 2 (Alice): ORD-TEST-002, delivered 10 days ago, Clothing, ₹1,500   ← expired window
-Order 3 (Alice): ORD-TEST-003, delivered 1 day ago, Home, ₹8,000          ← eligible, needs human review
-Order 4 (Bob):   ORD-TEST-004, delivered 1 day ago, Electronics, ₹2,000   ← belongs to Bob, not Alice
+Order 1 (Maya):  ORD-1001, delivered 3 days ago, Electronics, ₹7,499   ← eligible, needs human review (>₹5000)
+Order 2 (Maya):  ORD-1002, delivered 30 days ago, Accessories, ₹2,499  ← expired return window
+Order 3 (Arjun): ORD-2001, status=SHIPPED, Home, ₹3,299                ← no deliveryDate yet
 ```
 
 ---
