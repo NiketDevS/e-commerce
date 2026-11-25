@@ -94,20 +94,20 @@
 ---
 
 ## PHASE 7 — Frontend
-- ❌ Frontend initialized (Next.js App Router)
-- ❌ API service layer (fetch wrapper with credentials)
-- ❌ Auth: Register page
-- ❌ Auth: Login page
-- ❌ Customer dashboard layout + navigation
-- ❌ Orders listing page
-- ❌ Order detail page
-- ❌ Ticket creation form
-- ❌ Chat interface (ticket conversation)
-- ❌ Refund status view
-- ❌ Staff dashboard + ticket queue
-- ❌ Staff ticket detail + notes
-- ❌ Escalation review + refund decision UI
-- ❌ Loading / error / empty states
+- ✔️ Frontend initialized (Next.js App Router) — `npm run build` passes (12 routes)
+- ✔️ API service layer (fetch wrapper with `credentials: 'include'`)
+- ✔️ Auth: Register page (`/register`)
+- ✔️ Auth: Login page (`/login` with demo quick-fill)
+- ✔️ Customer dashboard layout + navigation (`/dashboard`)
+- ✔️ Orders listing page (`/dashboard/orders`)
+- ✔️ Order detail page (`/dashboard/orders/[id]`)
+- ✔️ Ticket creation form (`/dashboard/tickets`)
+- ✔️ Chat interface (`/dashboard/tickets/[id]`)
+- ✔️ Refund status view (`/dashboard/refunds`)
+- ✔️ Staff dashboard + ticket queue (`/staff`)
+- ✔️ Staff ticket detail + internal notes (`/staff/tickets/[id]`)
+- ✔️ Escalation review + refund decision UI (`/staff/escalations`)
+- ✔️ Loading / error / empty states across all screens
 
 ---
 

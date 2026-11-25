@@ -41,9 +41,9 @@ npm run dev                       # starts on http://localhost:3000
 
 | Role | Email | Password |
 |------|-------|----------|
-| Customer | alice@demo.com | password123 |
-| Customer | bob@demo.com | password123 |
-| Support Agent | staff@demo.com | staffpass123 |
+| Customer (Maya) | maya@example.com | password123 |
+| Customer (Arjun) | arjun@example.com | password123 |
+| Support Agent (Sam) | support@example.com | password123 |
 
 ---
 

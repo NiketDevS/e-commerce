@@ -12,7 +12,7 @@
 | 0.1 | Inspect repository state | Antigravity | COMPLETED | Low | — | Repo state documented |
 | 0.2 | Create shared memory documents | Antigravity | COMPLETED | Low | 0.1 | AI_PROJECT_CONTEXT.md, IMPLEMENTATION_PLAN.md, HANDOFF.md, PROGRESS.md, docs/ created |
 | 0.3 | Initialize backend (Node/Express/TypeScript) | Codex | COMPLETED | Medium | 0.2 | `backend/package.json`, `tsconfig.json`, `src/app.ts`, `src/server.ts`, basic health route; compile/start verified |
-| 0.4 | Initialize frontend (Next.js/TypeScript) | Antigravity | NOT_STARTED | Low | 0.2 | `frontend/` scaffolded with App Router, TypeScript, CSS Modules |
+| 0.4 | Initialize frontend (Next.js/TypeScript) | Antigravity | COMPLETED | Low | 0.2 | `frontend/` scaffolded with App Router, TypeScript, CSS Modules |
 | 0.5 | Configure Docker Compose for PostgreSQL | Codex | COMPLETED | Low | 0.2 | Compose defined; Neon PostgreSQL provisioned for dev & test |
 | 0.6 | Configure `.env.example` and `.gitignore` | Codex | COMPLETED | Low | 0.3, 0.5 | `.env.example` documents app/test URLs and placeholders; secrets/build artifacts ignored |
 
@@ -112,17 +112,17 @@
 
 | # | Task | Owner | Status | Complexity | Dependencies | Acceptance Criteria |
 |---|------|-------|--------|------------|--------------|---------------------|
-| 7.1 | Frontend project init + API service layer | Antigravity | NOT_STARTED | Medium | 0.4 | Axios/fetch wrapper with cookie credentials |
-| 7.2 | Auth pages: Register + Login | Antigravity | NOT_STARTED | Medium | 7.1, 2.2 | Form validation, error display, redirect on success |
-| 7.3 | Customer dashboard layout + navigation | Antigravity | NOT_STARTED | Medium | 7.2 | Protected route, role guard, responsive layout |
-| 7.4 | Orders listing + order detail pages | Antigravity | NOT_STARTED | Medium | 7.3, 3.1 | Fetches from API; customer sees only their orders |
-| 7.5 | Ticket creation form | Antigravity | NOT_STARTED | Medium | 7.3, 3.2 | Submits to POST /api/tickets |
-| 7.6 | Chat interface (ticket conversation) | Antigravity | NOT_STARTED | High | 7.5, 3.4 | Messages displayed with sender, timestamp, type |
-| 7.7 | Refund status view | Antigravity | NOT_STARTED | Medium | 7.6, 4.6 | Shows refund lifecycle status |
-| 7.8 | Staff dashboard + ticket queue | Antigravity | NOT_STARTED | Medium | 7.3, 3.5 | Staff-only layout; filter/search controls |
-| 7.9 | Staff ticket detail + conversation + notes | Antigravity | NOT_STARTED | Medium | 7.8, 3.6 | Notes section hidden from customer view |
-| 7.10 | Escalation review + refund decision UI | Antigravity | NOT_STARTED | High | 7.9, 6.2 | Approve/reject form with confirmation |
-| 7.11 | Loading, error and empty states | Antigravity | NOT_STARTED | Medium | 7.2–7.10 | All screens handle loading/error/empty gracefully |
+| 7.1 | Frontend project init + API service layer | Antigravity | COMPLETED | Medium | 0.4 | Fetch wrapper with cookie credentials |
+| 7.2 | Auth pages: Register + Login | Antigravity | COMPLETED | Medium | 7.1, 2.2 | Form validation, error display, redirect on success |
+| 7.3 | Customer dashboard layout + navigation | Antigravity | COMPLETED | Medium | 7.2 | Protected route, role guard, responsive layout |
+| 7.4 | Orders listing + order detail pages | Antigravity | COMPLETED | Medium | 7.3, 3.1 | Fetches from API; customer sees only their orders |
+| 7.5 | Ticket creation form | Antigravity | COMPLETED | Medium | 7.3, 3.2 | Submits to POST /api/tickets |
+| 7.6 | Chat interface (ticket conversation) | Antigravity | COMPLETED | High | 7.5, 3.4 | Messages displayed with sender, timestamp, type |
+| 7.7 | Refund status view | Antigravity | COMPLETED | Medium | 7.6, 4.6 | Shows refund lifecycle status |
+| 7.8 | Staff dashboard + ticket queue | Antigravity | COMPLETED | Medium | 7.3, 3.5 | Staff-only layout; filter/search controls |
+| 7.9 | Staff ticket detail + conversation + notes | Antigravity | COMPLETED | Medium | 7.8, 3.6 | Notes section hidden from customer view |
+| 7.10 | Escalation review + refund decision UI | Antigravity | COMPLETED | High | 7.9, 6.2 | Approve/reject form with confirmation |
+| 7.11 | Loading, error and empty states | Antigravity | COMPLETED | Medium | 7.2–7.10 | All screens handle loading/error/empty gracefully |
 
 ---
 
